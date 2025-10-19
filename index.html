@@ -1,0 +1,368 @@
+<!doctype html>
+
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Briefvorlage – DIN 5008 | Offline HTML Generator</title>
+  <meta name="description" content="Kostenloser offline Briefgenerator nach DIN 5008. Läuft komplett im Browser, keine Datenübertragung. Ideal für GitHub Pages & schnelle PDF‑Erstellung." />
+  <meta name="keywords" content="DIN 5008, Briefvorlage, Briefgenerator, PDF, Vorlage, Musterbrief, Anschreiben, kostenlos, offline" />
+  <meta name="robots" content="index,follow" />
+  <meta name="theme-color" content="#2563eb" />
+  <meta property="og:title" content="Briefvorlage – DIN 5008 (Offline)" />
+  <meta property="og:description" content="Schreibe korrekte DIN‑5008‑Briefe direkt im Browser. Keine externen Anfragen, perfekt für GitHub Pages." />
+  <meta property="og:type" content="website" />
+  <meta name="twitter:card" content="summary" />
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@type":"WebApplication",
+    "name":"Briefvorlage – DIN 5008 (Offline)",
+    "applicationCategory":"BusinessApplication",
+    "operatingSystem":"Any",
+    "description":"Offline Briefgenerator nach DIN 5008. Läuft komplett lokal im Browser und erzeugt druckfertige PDFs.",
+    "url":"./"
+  }
+  </script>
+  <style>
+    :root{
+      --bg:#f7f8fa;          
+      --surface:#ffffff;      
+      --ink:#0f172a;         
+      --muted:#64748b;       
+      --line:#e2e8f0;        
+      --brand:#2563eb;       
+      --brand-ink:#fff;--page-margin-top: 27mm;  
+  --page-margin-side: 25mm; 
+  --page-margin-bottom: 20mm;
+
+  --fold-1: 87mm;
+  --fold-2: 192mm;
+
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, "Noto Sans", "Liberation Sans", system-ui, sans-serif, "Apple Color Emoji","Segoe UI Emoji";
+  --font-serif: "Times New Roman", Times, "Liberation Serif", serif;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0; color:var(--ink); background:var(--bg); font-family:var(--font-sans);}
+
+header{background:#fff; border-bottom:1px solid var(--line); position:sticky; top:0; z-index:10}
+.container{max-width:1000px; margin:0 auto; padding:12px 16px;}
+.topbar{display:flex; align-items:center; justify-content:space-between}
+.brand{font-weight:800; letter-spacing:.1px}
+
+main .container{display:grid; grid-template-columns: 1fr; gap:16px;}
+
+.card{background:var(--surface); border:1px solid var(--line); border-radius:14px; box-shadow:0 2px 18px rgba(2,6,23,.04);}
+.card h2{font-size:18px; margin:0; padding:14px 16px; border-bottom:1px solid var(--line)}
+.card .body{padding:16px}
+
+label{display:block; font-size:13px; color:#334155; margin:10px 0 6px}
+input[type="text"], textarea{width:100%; padding:12px 14px; border:1px solid var(--line); border-radius:12px; background:#fff; font:inherit}
+input[type="text"]:focus, textarea:focus{outline:none; border-color:#cbd5e1; box-shadow:0 0 0 3px rgba(37,99,235,.15)}
+textarea{min-height:200px}
+
+.actions{display:flex; gap:10px; justify-content:center; padding:10px 0 2px}
+.btn{appearance:none; border:0; border-radius:999px; padding:12px 18px; cursor:pointer; font-weight:700}
+.btn.primary{background:var(--brand); color:var(--brand-ink)}
+.btn.ghost{background:#fff; border:1px solid var(--line)}
+
+/* Live-Vorschau – A4 Seite */
+.preview-wrap{padding:8px 0 18px}
+.preview-tools{display:flex; flex-wrap:wrap; gap:10px; align-items:center; justify-content:space-between; margin-bottom:10px}
+.tool-group{display:flex; gap:8px; align-items:center}
+.toggle{display:inline-flex; align-items:center; gap:6px; font-size:13px}
+.toggle input{accent-color:#2563eb}
+
+.letter-page{position:relative; width:210mm; min-height:297mm; margin:0 auto; background:#fff; color:#000; border:1px solid var(--line); border-radius:16px; overflow:visible; padding:var(--page-margin-top) var(--page-margin-side) var(--page-margin-bottom); font-size:11pt; line-height:1.35}
+.sender-line{font-size:9pt; color:#475569; margin-bottom:6mm}
+.addr-block{white-space:pre-line; margin-bottom:10mm}
+.date-line{display:flex; justify-content:flex-end; margin:0 0 8mm}
+.subject{font-weight:800; margin:0 0 6mm}
+.greeting{margin:0 0 5mm}
+.bodytext{white-space:pre-wrap}
+.closing{margin:8mm 0 18mm}
+.signature{white-space:pre-line}
+.attachments{margin-top:14mm}
+.attachments .label{font-weight:700}
+
+.fold-marks[data-visible="true"]::before,
+.fold-marks[data-visible="true"]::after{content:""; position:absolute; left:8mm; right:8mm; height:0; border-top:1px dashed #94a3b8}
+.fold-marks[data-visible="true"]::before{ top:var(--fold-1) }
+.fold-marks[data-visible="true"]::after{ top:var(--fold-2) }
+
+.font-helvetica{font-family:var(--font-sans)}
+.font-times{font-family:var(--font-serif)}
+
+/* Mobile */
+@media (max-width: 820px){
+  .letter-page{transform:scale(.8); transform-origin: top center;}
+}
+
+/* Druck nur Seite */
+@media print{
+  header,.form,.preview-tools,.actions{display:none !important}
+  .container{max-width:none; padding:0}
+  .letter-page{border:0; width:auto; min-height:auto; margin:0}
+  @page{size:A4; margin: var(--page-margin-top) var(--page-margin-side) var(--page-margin-bottom) var(--page-margin-side)}
+}
+
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container topbar">
+      <div class="brand">Briefvorlage (offline)</div>
+      <nav aria-label="Hauptnavigation">
+        <a href="#formular">Formular</a>
+        <span aria-hidden="true">·</span>
+        <a href="#vorschau">Vorschau</a>
+      </nav>
+    </div>
+  </header>  <main>
+    <div class="container">
+      <article class="card form" id="formular" itemscope itemtype="https://schema.org/CreativeWork">
+        <h2 itemprop="headline">Formular</h2>
+        <div class="body">
+          <!-- Empfänger untereinander -->
+          <section aria-labelledby="empfaenger">
+            <h3 id="empfaenger">Empfängerdaten</h3>
+            <label for="recipient_company">Firma (optional)</label>
+            <input id="recipient_company" type="text" maxlength="60" value="Beispiel GmbH & Co. KG"><label for="recipient_department">Abteilung (optional)</label>
+        <input id="recipient_department" type="text" maxlength="60" value="Marketingabteilung">
+
+        <label for="recipient_name">Person</label>
+        <input id="recipient_name" type="text" maxlength="60" value="Herrn Alex Beispiel">
+
+        <label for="recipient_street">Straße</label>
+        <input id="recipient_street" type="text" maxlength="60" value="Kernallee 27">
+
+        <label for="recipient_zip">PLZ</label>
+        <input id="recipient_zip" type="text" maxlength="10" value="54321">
+
+        <label for="recipient_city">Stadt</label>
+        <input id="recipient_city" type="text" maxlength="40" value="Empfängerstadt">
+      </section>
+
+      <!-- Absender untereinander -->
+      <section aria-labelledby="absender" style="margin-top:18px">
+        <h3 id="absender">Absenderdaten</h3>
+        <label for="sender_name">Person</label>
+        <input id="sender_name" type="text" maxlength="60" value="Rapunzel Mustermann">
+
+        <label for="sender_street">Straße</label>
+        <input id="sender_street" type="text" maxlength="60" value="Musterstraße 123a">
+
+        <label for="sender_zip">PLZ</label>
+        <input id="sender_zip" type="text" maxlength="10" value="12345">
+
+        <label for="sender_city">Stadt</label>
+        <input id="sender_city" type="text" maxlength="40" value="Absenderstadt">
+      </section>
+
+      <!-- Brieftext -->
+      <section aria-labelledby="brieftext" style="margin-top:18px">
+        <h3 id="brieftext">Brieftext</h3>
+        <label for="date">Datum</label>
+        <input id="date" type="text" size="19">
+
+        <label for="subject">Betreff</label>
+        <input id="subject" type="text" maxlength="60" value="Privater Brief">
+
+        <label for="greeting">Anrede</label>
+        <input id="greeting" type="text" maxlength="60" value="Sehr geehrte Damen und Herren,">
+
+        <label for="body">Text</label>
+        <textarea id="body">ich hoffe, es geht Ihnen gut.
+
+hiermit schreibe ich Ihnen bezüglich [Betreff einfügen]. Nachfolgend die wichtigsten Punkte:
+
+• Punkt 1 • Punkt 2 • Punkt 3
+
+Vielen Dank im Voraus. Für Rückfragen stehe ich gerne zur Verfügung.</textarea>
+
+<label for="closing">Abschiedsformel</label>
+        <input id="closing" type="text" maxlength="150" value="Mit freundlichen Grüßen">
+
+        <label for="sender_name_signature">Person (Signatur)</label>
+        <input id="sender_name_signature" type="text" maxlength="100" value="Dipl.-Phil. Rapunzel Mustermann">
+
+        <label for="attachments">Anlagen (durch Komma getrennt)</label>
+        <input id="attachments" type="text" maxlength="1000" placeholder="(leer lassen, falls keine Anlagen)">
+      </section>
+
+      <div class="actions">
+        <button class="btn primary" id="printBtn" aria-label="Als PDF drucken">Als PDF drucken</button>
+        <button class="btn ghost" id="resetBtn" aria-label="Formular zurücksetzen">Zurücksetzen</button>
+      </div>
+    </div>
+  </article>
+
+  <!-- Live-Vorschau direkt darunter -->
+  <aside class="card preview" id="vorschau" aria-live="polite">
+    <h2 style="margin:0; padding:14px 16px; border-bottom:1px solid var(--line)">Vorschau</h2>
+    <div class="body preview-wrap">
+      <div class="preview-tools">
+        <div class="tool-group">
+          <label class="toggle"><input type="radio" name="font" value="helv" checked> Helvetica/Arial</label>
+          <label class="toggle"><input type="radio" name="font" value="times"> Times</label>
+        </div>
+        <div class="tool-group">
+          <label class="toggle"><input type="checkbox" id="foldToggle" checked> Faltmarken anzeigen</label>
+          <button class="btn ghost" id="copyText">Text übernehmen</button>
+        </div>
+      </div>
+
+      <div class="letter-page font-helvetica fold-marks" data-visible="true">
+        <div class="sender-line" id="pv_sender_line">Rapunzel Mustermann · Musterstraße 123a · 12345 Absenderstadt</div>
+        <div class="addr-block" id="pv_address">Beispiel GmbH & Co. KG
+
+Marketingabteilung Herrn Alex Beispiel Kernallee 27 54321 Empfängerstadt</div> <div class="date-line"><div id="pv_date">Absenderstadt, 1. Januar 2025</div></div> <h2 class="subject" id="pv_subject">Privater Brief</h2> <p class="greeting" id="pv_greeting">Sehr geehrte Damen und Herren,</p> <div class="bodytext" id="pv_body"></div> <p class="closing" id="pv_closing">Mit freundlichen Grüßen</p> <div class="signature" id="pv_signature">Dipl.-Phil. Rapunzel Mustermann</div> <div class="attachments" id="pv_attachments" hidden> <div class="label">Anlagen</div> <div id="pv_attachments_list"></div> </div> </div> </div> </aside> </div>
+
+  </main>  <script>
+  // ==== Helpers ====
+  const $ = sel => document.querySelector(sel);
+  const setText = (id, val) => { const el = document.getElementById(id); if(el) el.textContent = val; };
+
+  function germanToday(){
+    return new Date().toLocaleDateString('de-DE',{year:'numeric',month:'long',day:'numeric'});
+  }
+
+  function formatSenderLine(){
+    const n = $('#sender_name').value.trim();
+    const s = $('#sender_street').value.trim();
+    const z = $('#sender_zip').value.trim();
+    const c = $('#sender_city').value.trim();
+    return [n, s, (z && c) ? (z + ' ' + c) : (z || c)].filter(Boolean).join(' · ');
+  }
+
+  function formatAddress(){
+    const company = $('#recipient_company').value.trim();
+    const dept    = $('#recipient_department').value.trim();
+    const person  = $('#recipient_name').value.trim();
+    const street  = $('#recipient_street').value.trim();
+    const zip     = $('#recipient_zip').value.trim();
+    const city    = $('#recipient_city').value.trim();
+    return [company, dept, person, street, [zip, city].filter(Boolean).join(' ')].filter(Boolean).join('
+');
+  }
+
+  function updatePreview(){
+    // Kopfzeile & Adresse
+    setText('pv_sender_line', formatSenderLine());
+    setText('pv_address', formatAddress());
+
+    // Datum (rechts) – Stadt dynamisch
+    const city = $('#sender_city').value.trim() || 'Absenderstadt';
+    const dateVal = $('#date').value.trim();
+    setText('pv_date', city + ', ' + (dateVal || germanToday()));
+
+    // Inhalte
+    setText('pv_subject', $('#subject').value);
+    setText('pv_greeting', $('#greeting').value);
+    const bodyEl = document.getElementById('pv_body');
+    if(bodyEl) bodyEl.textContent = $('#body').value;
+    setText('pv_closing', $('#closing').value);
+    const sig = $('#sender_name_signature').value || $('#sender_name').value;
+    const sigEl = document.getElementById('pv_signature'); if(sigEl) sigEl.textContent = sig;
+
+    // Anlagen
+    const attRaw = $('#attachments').value.trim();
+    const attBox = $('#pv_attachments');
+    const attList = $('#pv_attachments_list');
+    if(attRaw){
+      const items = attRaw.split(',').map(s=>s.trim()).filter(Boolean);
+      if(attList) attList.textContent = items.join('
+');
+      if(attBox) attBox.hidden = false;
+    } else {
+      if(attBox) attBox.hidden = true;
+      if(attList) attList.textContent = '';
+    }
+  }
+
+  function setFont(){
+    const page = document.querySelector('.letter-page');
+    if(!page) return;
+    const choice = document.querySelector('input[name="font"]:checked').value;
+    page.classList.remove('font-helvetica','font-times');
+    page.classList.add(choice === 'times' ? 'font-times' : 'font-helvetica');
+  }
+
+  function setFoldMarks(){
+    const on = document.getElementById('foldToggle').checked;
+    const page = document.querySelector('.letter-page');
+    if(page) page.setAttribute('data-visible', on ? 'true' : 'false');
+  }
+
+  document.addEventListener('DOMContentLoaded', ()=>{
+    // Datum vorbelegen & erste Vorschau
+    const dateInput = document.getElementById('date');
+    if(dateInput) dateInput.value = germanToday();
+    updatePreview();
+
+    // Inputs -> Preview
+    const ids = ['recipient_company','recipient_department','recipient_name','recipient_street','recipient_zip','recipient_city','sender_name','sender_street','sender_zip','sender_city','date','subject','greeting','body','closing','sender_name_signature','attachments'];
+    ids.forEach(id=>{ const el = document.getElementById(id); if(el) el.addEventListener('input', updatePreview); });
+
+    // Tools
+    document.querySelectorAll('input[name="font"]').forEach(r=>r.addEventListener('change', setFont));
+    const fold = document.getElementById('foldToggle'); if(fold) fold.addEventListener('change', setFoldMarks);
+    setFont(); setFoldMarks();
+
+    // Drucken in separatem Fenster (stabile Ränder wie im Original)
+    const printBtn = document.getElementById('printBtn');
+    if(printBtn){
+      printBtn.addEventListener('click', (e)=>{
+        e.preventDefault();
+        updatePreview();
+        const styleEl = document.querySelector('head style');
+        const styles = styleEl ? styleEl.innerHTML : '';
+        const letter = document.querySelector('.letter-page').outerHTML;
+        const w = window.open('', '_blank');
+        if(!w){ alert('Pop-up blockiert. Bitte Pop-ups für diese Seite erlauben.'); return; }
+        w.document.open();
+        w.document.write(`<!doctype html><html lang='de'><head><meta charset='utf-8'>
+          <title>Brief – PDF</title>
+          <style>${styles}</style><style>
+        body{margin:0}
+        @media screen{ body{display:flex;justify-content:center;align-items:flex-start;background:#fff;padding:0} }
+        @media print{ @page{size:A4; margin: var(--page-margin-top) var(--page-margin-side) var(--page-margin-bottom) var(--page-margin-side)} }
+      </style>
+    </head><body>${letter}</body></html>`);
+    w.document.close();
+    w.addEventListener('load', ()=>{ setTimeout(()=>{ w.focus(); w.print(); }, 50); });
+  });
+}
+
+// Reset
+const resetBtn = document.getElementById('resetBtn');
+if(resetBtn){
+  resetBtn.addEventListener('click', (e)=>{
+    e.preventDefault();
+    document.querySelectorAll('input[type="text"], textarea').forEach(el=>{
+      if(el.id==='date'){ el.value=germanToday(); }
+      else { el.value = el.defaultValue || ''; }
+    });
+    updatePreview();
+  });
+}
+
+// Copy Text
+const copyBtn = document.getElementById('copyText');
+if(copyBtn){
+  copyBtn.addEventListener('click', ()=>{
+    const text = [
+      document.getElementById('pv_subject').textContent,
+      '',
+      document.getElementById('pv_greeting').textContent,
+      document.getElementById('pv_body').textContent,
+      '',
+      document.getElementById('pv_closing').textContent,
+      document.getElementById('pv_signature').textContent
+    ].join('
+
+'); navigator.clipboard.writeText(text).then(()=>{ copyBtn.textContent='Kopiert!'; setTimeout(()=>{ copyBtn.textContent='Text übernehmen'; }, 1200); }); }); } }); </script>
+
+</body>
+</html>
