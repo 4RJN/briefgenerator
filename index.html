@@ -1,84 +1,26 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>DinBrief PDF Test</title>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.legacy.min.js"></script>
-  <style>
-    body {
-      font-family: sans-serif;
-      margin: 2rem;
-      background: #f5f5f5;
-    }
-    input, textarea {
-      width: 100%;
-      margin-bottom: 1rem;
-      padding: 0.5rem;
-    }
-    button {
-      padding: 0.7rem 1.2rem;
-      background: #007bff;
-      color: white;
-      border: none;
-      cursor: pointer;
-    }
-  </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>PDF Test Mobil (Offlinefähig)</title>
+  <script src="assets/jspdf.legacy.min.js"></script>
 </head>
-<body>
-  <h1>PDF-Test: DinBrief</h1>
-
-  <label>Absendername</label>
-  <input id="sender_name" value="Arijan Rahimic">
-
-  <label>Ort</label>
-  <input id="sender_city" value="München">
-
-  <label>Datum</label>
-  <input id="date" value="19. Oktober 2025">
-
-  <label>Betreff</label>
-  <input id="subject" value="Testbrief">
-
-  <label>Anrede</label>
-  <input id="greeting" value="Sehr geehrter Herr Mustermann,">
-
-  <label>Brieftext</label>
-  <textarea id="body" rows="6">dies ist ein einfacher PDF-Test, der auf GitHub Pages funktionieren sollte.</textarea>
-
-  <label>Abschiedsformel</label>
-  <input id="closing" value="Mit freundlichen Grüßen">
-
-  <label>Unterschrift</label>
-  <input id="signature" value="Arijan Rahimic">
-
-  <button onclick="generatePDF()">PDF erstellen</button>
+<body style="font-family:sans-serif;padding:2rem;text-align:center;">
+  <h2>📄 PDF-Test (Offlinefähig)</h2>
+  <p>Drücke den Button. Wenn ein PDF heruntergeladen wird, funktioniert alles – auch ohne Internet.</p>
+  <button onclick="generatePDF()" style="padding:1rem 2rem;font-size:1.2rem;">PDF erstellen</button>
 
   <script>
     function generatePDF() {
+      if (typeof jsPDF === "undefined") {
+        alert("Fehler: jsPDF nicht geladen");
+        return;
+      }
+
       const doc = new jsPDF();
-
-      const name = document.getElementById("sender_name").value;
-      const city = document.getElementById("sender_city").value;
-      const date = document.getElementById("date").value;
-      const subject = document.getElementById("subject").value;
-      const greeting = document.getElementById("greeting").value;
-      const body = document.getElementById("body").value;
-      const closing = document.getElementById("closing").value;
-      const signature = document.getElementById("signature").value;
-
-      let y = 20;
-      doc.setFontSize(12);
-      doc.text(name, 20, y); y += 10;
-      doc.text(`${city}, den ${date}`, 150, y, { align: "right" }); y += 20;
-      doc.text(subject, 20, y); y += 10;
-      doc.text(greeting, 20, y); y += 10;
-      body.split('\\n').forEach(line => { doc.text(line, 20, y); y += 10; });
-      y += 10;
-      doc.text(closing, 20, y); y += 10;
-      doc.text(signature, 20, y);
-
-      doc.save("DinBrief.pdf");
+      doc.text("Hallo vom Handy! (Offline-Version)", 20, 20);
+      doc.save("TestMobil.pdf");
     }
   </script>
 </body>
