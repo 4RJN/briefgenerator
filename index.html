@@ -329,13 +329,15 @@ Marketingabteilung Herrn Alex Beispiel Kernallee 27 54321 Empfängerstadt</div> 
         @media screen{ body{display:flex;justify-content:center;align-items:flex-start;background:#fff;padding:0} }
         @media print{ @page{size:A4; margin: var(--page-margin-top) var(--page-margin-side) var(--page-margin-bottom) var(--page-margin-side)} }
       </style>
-    </head><body>${letter}</body></html>`);
-    w.document.close();
-    w.addEventListener('load', ()=>{ setTimeout(()=>{ w.focus(); w.print(); }, 50); });
-  });
-}
+    </head><body>${letter}<script>
 
-// Reset
+// Override print to avoid popup blockers and work on GitHub Pages (function(){ function safeUpdate(){ try { if (typeof updatePreview === 'function') updatePreview(); } catch(e){} } document.addEventListener('DOMContentLoaded', function(){ var btn = document.getElementById('printBtn'); if(btn){ btn.onclick = function(ev){ ev.preventDefault(); safeUpdate(); window.print(); }; } }); })(); </script>
+
+</body></html>`);
+        w.document.close();
+        w.addEventListener('load', ()=>{ setTimeout(()=>{ w.focus(); w.print(); }, 50); });
+      });
+    }// Reset
 const resetBtn = document.getElementById('resetBtn');
 if(resetBtn){
   resetBtn.addEventListener('click', (e)=>{
